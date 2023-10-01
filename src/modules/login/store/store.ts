@@ -1,18 +1,17 @@
 import { create } from 'zustand'
-import { toast } from 'react-toastify'
 
-import { api } from '../../../global/services/api'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { createLoginSlice } from './slice'
+import { Storage } from '../../../global/enums/storage'
 
-export const useLoginStore = create<Login.Store.Props>()(() => ({
-  auth: undefined,
-  login: async (params) => {
-    try {
-      const { data } = await api.post('/login', params)
-
-      console.log({ data })
-    } catch (error) {
-      toast.error('Erro ao fazer login')
-    }
-  },
-  logout: async () => {},
-}))
+export const useLoginStore = create<Login.Store.Props>()(
+  persist(
+    (...storePros) => ({
+      ...createLoginSlice(...storePros),
+    }),
+    {
+      name: `${Storage.APP_KEY}:${Storage.LOGIN_KEY}`,
+      storage: createJSONStorage(() => sessionStorage),
+    },
+  ),
+)
