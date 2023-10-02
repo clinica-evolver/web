@@ -25,6 +25,8 @@ export function Admin(): React.JSX.Element {
     return <h1>Loading...</h1>
   }
 
+  console.log(response)
+
   return (
     <Wrapper>
       <h1>Admin</h1>
