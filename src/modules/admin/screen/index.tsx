@@ -5,7 +5,7 @@ import { Wrapper } from './styles'
 export function Admin(): React.JSX.Element {
   return (
     <Wrapper>
-      <h1>ola</h1>
+      <h1>Admin</h1>
     </Wrapper>
   )
 }
