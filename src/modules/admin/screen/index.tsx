@@ -12,6 +12,9 @@ import editIMG from '../../../assets/icons/pencil.png'
 import deleteIMG from '../../../assets/icons/trash.png'
 import viewIMG from '../../../assets/icons/see.png'
 import { DrawerCreateAdmin } from '../components/drawer-create-admin'
+import { DrawerSeeDetails } from '../components/drawer-see-details'
+import { DrawerDeleteAmdin } from '../components/drawer-delete-admin'
+import { DrawerEditAdmin } from '../components/drawer-edit-admin'
 
 export function Admin(): React.JSX.Element {
   const { getAdmins, admins } = useAdminStore()
@@ -20,6 +23,11 @@ export function Admin(): React.JSX.Element {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [createAdminDrawer, setCreateAdminDrawer] = useState(false)
+  const [seeDetailsDrawer, setSeeDetailsDrawer] = useState(false)
+  const [deleteAmdinDrawer, setDeleteAmdinDrawer] = useState(false)
+  const [editAdminDrawer, setEditAdminDrawer] = useState(false)
+  const [selectedAdmin, setSelectedAdmin] =
+    useState<Admin.Store.AdminListParams>()
 
   useEffect(() => {
     getAdmins()
@@ -32,6 +40,21 @@ export function Admin(): React.JSX.Element {
         setLoading(false)
       })
   }, [])
+
+  const handleSeeDetails = (admin: Admin.Store.AdminListParams) => {
+    setSeeDetailsDrawer(true)
+    setSelectedAdmin(admin)
+  }
+
+  const handleDeleteAmdin = (admin: Admin.Store.AdminListParams) => {
+    setDeleteAmdinDrawer(true)
+    setSelectedAdmin(admin)
+  }
+
+  const handleEditAdmin = (admin: Admin.Store.AdminListParams) => {
+    setEditAdminDrawer(true)
+    setSelectedAdmin(admin)
+  }
 
   if (loading) {
     return <h1>Loading...</h1>
@@ -82,12 +105,20 @@ export function Admin(): React.JSX.Element {
                 <td>{admin.role}</td>
                 <td>{admin.phone}</td>
                 <td className="action-buttons">
-                  <IconButton image={editIMG} />
+                  <IconButton
+                    image={editIMG}
+                    onClick={() => handleEditAdmin(admin)}
+                  />
                   <IconButton
                     image={deleteIMG}
                     backgroundcolor={color.red500}
+                    onClick={() => handleDeleteAmdin(admin)}
                   />
-                  <IconButton image={viewIMG} backgroundcolor={color.gray300} />
+                  <IconButton
+                    image={viewIMG}
+                    backgroundcolor={color.gray300}
+                    onClick={() => handleSeeDetails(admin)}
+                  />
                 </td>
               </tr>
             ))}
@@ -99,6 +130,27 @@ export function Admin(): React.JSX.Element {
         onClose={() => setCreateAdminDrawer(false)}
         isOpen={createAdminDrawer}
       />
+      {selectedAdmin && (
+        <DrawerSeeDetails
+          selectedAdmin={selectedAdmin}
+          onClose={() => setSeeDetailsDrawer(false)}
+          isOpen={seeDetailsDrawer}
+        />
+      )}
+      {selectedAdmin && (
+        <DrawerDeleteAmdin
+          selectedAdmin={selectedAdmin}
+          onClose={() => setDeleteAmdinDrawer(false)}
+          isOpen={deleteAmdinDrawer}
+        />
+      )}
+      {selectedAdmin && (
+        <DrawerEditAdmin
+          selectedAdmin={selectedAdmin}
+          onClose={() => setEditAdminDrawer(false)}
+          isOpen={editAdminDrawer}
+        />
+      )}
     </Wrapper>
   )
 }

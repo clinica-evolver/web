@@ -31,7 +31,7 @@ export const createAdminSlice: StateCreator<
   },
   editAdmin: async (params) => {
     try {
-      await api.put(`/admin/${params.id}`, params)
+      await api.put('/admin', params)
     } catch (error) {
       throw new Error('Erro ao editar administrador')
     }

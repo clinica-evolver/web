@@ -17,3 +17,10 @@ export const formatDateToISO = (value: string) => {
 
   return `${year}-${month}-${convertedDay}T00:00:00Z`
 }
+
+export const formatIsoToDate = (value: string) => {
+  const [year, month, day] = value.split('-')
+  const [splittedDay] = day.split('T')
+
+  return `${splittedDay}/${month}/${year}`
+}

@@ -6,38 +6,33 @@ import { Drawer } from '../../../../components/molecules/drawer'
 import { Input } from '../../../../components/molecules/input'
 import { Button } from '../../../../components/atoms/button'
 import { useAdminStore } from '../../store/store'
-import {
-  formatDateToISO,
-  maskDate,
-} from '../../../../global/helpers/dateFormat'
 import { phoneFormat } from '../../../../global/helpers/phoneFormat'
-import { Select } from '../../../../components/molecules/select'
 
-interface DrawerCreateAdminProps {
+interface DrawerEditAdminProps {
   onClose: () => void
   isOpen: boolean
+  selectedAdmin: Admin.Store.AdminListParams
 }
 
-export function DrawerCreateAdmin({
+export function DrawerEditAdmin({
   onClose,
   isOpen,
-}: DrawerCreateAdminProps): React.JSX.Element {
-  const { createAdmin } = useAdminStore()
+  selectedAdmin,
+}: DrawerEditAdminProps): React.JSX.Element {
+  const { editAdmin } = useAdminStore()
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [dateOfBirth, setDateOfBirth] = useState('')
-  const [phone, setPhone] = useState('')
-  const [role, setRole] = useState('')
-  const [descriptionRole, setDescriptionRole] = useState('')
-  const [registerCode, setRegisterCode] = useState('')
-  const [address, setAddress] = useState('')
+  const [email, setEmail] = useState(selectedAdmin.email)
+  const [phone, setPhone] = useState(selectedAdmin.phone)
+  const [role, setRole] = useState(selectedAdmin.role)
+  const [descriptionRole, setDescriptionRole] = useState(
+    selectedAdmin.descriptionRole,
+  )
+  const [address, setAddress] = useState(selectedAdmin.address)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [gender, setGender] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleCreateAdmin = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleEditAdmin = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true)
     event.preventDefault()
 
@@ -45,22 +40,24 @@ export function DrawerCreateAdmin({
       return toast.error('As senhas precisam ser iguais')
     }
 
+    const admin = {
+      id: selectedAdmin.id,
+      email,
+      phone,
+      access: 1,
+      role,
+      descriptionRole,
+      address,
+    }
+
+    if (password.length) {
+      Object.assign(admin, { password })
+    }
+
     try {
-      await createAdmin({
-        name,
-        email,
-        dateBirth: formatDateToISO(dateOfBirth),
-        phone,
-        access: 1,
-        gender,
-        role,
-        descriptionRole,
-        registerCode,
-        address,
-        password,
-      })
+      await editAdmin(admin)
+      toast.success('Admin editado com sucesso')
       onClose()
-      toast.success('Admin criado com sucesso')
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)
@@ -71,30 +68,15 @@ export function DrawerCreateAdmin({
   }
 
   return (
-    <Drawer title="Criar um Admin" onClose={onClose} isOpen={isOpen}>
-      <Form onSubmit={handleCreateAdmin}>
+    <Drawer title="Editar um Admin" onClose={onClose} isOpen={isOpen}>
+      <Form onSubmit={handleEditAdmin}>
         <div className="scroll">
-          <Input
-            marginbottom={1}
-            label="Nome"
-            value={name}
-            onChange={(inputProps) => setName(inputProps.target.value)}
-          />
           <Input
             type="email"
             marginbottom={1}
             label="E-mail"
             value={email}
             onChange={(inputProps) => setEmail(inputProps.target.value)}
-          />
-          <Input
-            maxLength={10}
-            marginbottom={1}
-            label="Data de nascimento"
-            value={dateOfBirth}
-            onChange={(inputProps) =>
-              setDateOfBirth(maskDate(inputProps.target.value))
-            }
           />
           <Input
             maxLength={15}
@@ -104,15 +86,6 @@ export function DrawerCreateAdmin({
             onChange={(inputProps) =>
               setPhone(phoneFormat(inputProps.target.value))
             }
-          />
-          <Select
-            marginbottom={1}
-            label="Sexo"
-            options={[
-              { value: 'male', label: 'Masculino' },
-              { value: 'female', label: 'Feminino' },
-            ]}
-            onChange={setGender}
           />
           <Input
             marginbottom={1}
@@ -127,12 +100,6 @@ export function DrawerCreateAdmin({
             onChange={(inputProps) =>
               setDescriptionRole(inputProps.target.value)
             }
-          />
-          <Input
-            marginbottom={1}
-            label="Código de registro"
-            value={registerCode}
-            onChange={(inputProps) => setRegisterCode(inputProps.target.value)}
           />
           <Input
             marginbottom={1}
@@ -160,7 +127,7 @@ export function DrawerCreateAdmin({
           </div>
 
           <Button type="submit" loading={isLoading}>
-            Criar
+            Salvar
           </Button>
         </div>
       </Form>
