@@ -1,6 +1,13 @@
 {
     "extends": "@rocketseat/eslint-config/react",
     "rules": {
-        "max-len": ["error", { "code": 120, "ignoreUrls": true }]
+        "max-len": [
+            "error",
+            {
+                "code": 120,
+                "ignoreUrls": true
+            }
+        ],
+        "react-hooks/exhaustive-deps": "off"
     }
 }

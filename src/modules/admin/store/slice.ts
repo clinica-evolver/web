@@ -22,7 +22,7 @@ export const createAdminSlice: StateCreator<
       throw new Error('Erro ao buscar administradores')
     }
   },
-  createAdmin: async (params) => {
+  createAdmin: async (params: Admin.Store.AdminCreateParams) => {
     try {
       await api.post('/admin', params)
     } catch (error) {

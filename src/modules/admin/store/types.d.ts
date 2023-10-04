@@ -1,7 +1,6 @@
 declare namespace Admin {
   namespace Store {
     interface Admin {
-      id: string
       email: string
       name: string
       dateBirth: string
@@ -10,11 +9,12 @@ declare namespace Admin {
       role: string
       descriptionRole: string
       registerCode: string
-      gender: 'male' | 'female'
-      accessId: number
+      gender: string
+      access: number
     }
 
     interface AdminListParams extends Admin {
+      id: string
       createdAt: string
       updatedAt: string
     }
@@ -36,13 +36,13 @@ declare namespace Admin {
 
     interface Action {
       getAdmins: () => Promise<void>
-      createAdmin: (params: AdminCreate) => Promise<void>
+      createAdmin: (params: AdminCreateParams) => Promise<void>
       editAdmin: (params: AdminEditParams) => Promise<void>
       deleteAdmin: (id: string) => Promise<void>
     }
 
     interface State {
-      admins?: Admin
+      admins?: AdminListParams[]
     }
 
     type Props = State & Action
