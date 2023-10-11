@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
-import { Drawer } from '../../../../components/molecules/drawer'
-import { useAdminStore } from '../../store/store'
-import { Button } from '../../../../components/atoms/button'
+import { Drawer } from '@molecules/drawer'
+import { Button } from '@atoms/button'
+import { useAdminStore } from '../../store'
 import { ContainerText } from './styles'
 
 interface DrawerDeleteAmdinProps {

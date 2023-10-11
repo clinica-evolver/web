@@ -1,17 +1,14 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
+import { Drawer } from '@molecules/drawer'
+import { Select } from '@molecules/select'
+import { Input } from '@molecules/input'
+import { Button } from '@atoms/button'
+import { formatDateToISO, maskDate } from '@helpers/date-format'
+import { phoneFormat } from '@helpers/phone-format'
+import { useAdminStore } from '../../store'
 import { Form } from './styles'
-import { Drawer } from '../../../../components/molecules/drawer'
-import { Input } from '../../../../components/molecules/input'
-import { Button } from '../../../../components/atoms/button'
-import { useAdminStore } from '../../store/store'
-import {
-  formatDateToISO,
-  maskDate,
-} from '../../../../global/helpers/date-format'
-import { phoneFormat } from '../../../../global/helpers/phone-format'
-import { Select } from '../../../../components/molecules/select'
 
 interface DrawerCreateAdminProps {
   onClose: () => void

@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { Drawer } from '../../../../components/molecules/drawer'
-import { InfoAndValue } from '../../../../components/molecules/InfoAndValue'
-import { formatIsoToDate } from '../../../../global/helpers/date-format'
-import { genderFormat } from '../../../../global/helpers/gender-format'
+import { Drawer } from '@molecules/drawer'
+import { InfoAndValue } from '@molecules/InfoAndValue'
+import { formatIsoToDate } from '@helpers/date-format'
+import { genderFormat } from '@helpers/gender-format'
 import { DetailsSection } from './styles'
 
 interface DrawerSeeDetailsProps {

@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
+import { Drawer } from '@molecules/drawer'
+import { Input } from '@molecules/input'
+import { Button } from '@atoms/button'
+import { phoneFormat } from '@helpers/phone-format'
+import { useAdminStore } from '../../store'
 import { Form } from './styles'
-import { Drawer } from '../../../../components/molecules/drawer'
-import { Input } from '../../../../components/molecules/input'
-import { Button } from '../../../../components/atoms/button'
-import { useAdminStore } from '../../store/store'
-import { phoneFormat } from '../../../../global/helpers/phone-format'
 
 interface DrawerEditAdminProps {
   onClose: () => void
