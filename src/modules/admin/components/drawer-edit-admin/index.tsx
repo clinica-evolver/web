@@ -6,7 +6,7 @@ import { Drawer } from '../../../../components/molecules/drawer'
 import { Input } from '../../../../components/molecules/input'
 import { Button } from '../../../../components/atoms/button'
 import { useAdminStore } from '../../store/store'
-import { phoneFormat } from '../../../../global/helpers/phoneFormat'
+import { phoneFormat } from '../../../../global/helpers/phone-format'
 
 interface DrawerEditAdminProps {
   onClose: () => void

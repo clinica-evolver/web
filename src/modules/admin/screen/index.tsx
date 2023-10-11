@@ -66,7 +66,7 @@ export function Admin(): React.JSX.Element {
 
   return (
     <Wrapper>
-      <Title>Admin</Title>
+      <Title>Administrativo</Title>
 
       <section className="action-area">
         <div className="search">
