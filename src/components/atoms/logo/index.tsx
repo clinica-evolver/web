@@ -8,7 +8,7 @@ interface LogoProps {
 }
 
 export function Logo({ width = 100 }: LogoProps): React.JSX.Element {
-  const height = (width * 0.3).toString()
+  const height = (width * 0.4).toString()
 
   return (
     <LogoComponent
