@@ -9,28 +9,28 @@ import { Header } from '@molecules/header'
 import viewIMG from '@assets/icons/see.png'
 import editIMG from '@assets/icons/pencil.png'
 import deleteIMG from '@assets/icons/trash.png'
-import { useAdminStore } from '../store'
-import { DrawerCreateAdmin } from '../components/drawer-create-admin'
+import { usePatientStore } from '../store'
+import { DrawerCreatePatient } from '../components/drawer-create-patient'
 import { DrawerSeeDetails } from '../components/drawer-see-details'
-import { DrawerDeleteAmdin } from '../components/drawer-delete-admin'
-import { DrawerEditAdmin } from '../components/drawer-edit-admin'
+import { DrawerDeletePatient } from '../components/drawer-delete-patient'
+import { DrawerEditPatient } from '../components/drawer-edit-patient'
 import { Wrapper } from './styles'
 
-export function Admin(): React.JSX.Element {
-  const { getAdmins, admins } = useAdminStore()
+export function Patient(): React.JSX.Element {
+  const { getPatients, patients } = usePatientStore()
   const { color } = useTheme()
 
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const [createAdminDrawer, setCreateAdminDrawer] = useState(false)
+  const [createPatientDrawer, setCreatePatientDrawer] = useState(false)
   const [seeDetailsDrawer, setSeeDetailsDrawer] = useState(false)
-  const [deleteAmdinDrawer, setDeleteAmdinDrawer] = useState(false)
-  const [editAdminDrawer, setEditAdminDrawer] = useState(false)
-  const [selectedAdmin, setSelectedAdmin] =
-    useState<Admin.Store.AdminListParams>()
+  const [deletePatientDrawer, setDeletePatientDrawer] = useState(false)
+  const [editPatientDrawer, setEditPatientDrawer] = useState(false)
+  const [selectPatient, setSelectPatient] =
+    useState<Patient.Store.PatientListParams>()
 
   useEffect(() => {
-    getAdmins()
+    getPatients()
       .catch((error) => {
         if (error instanceof Error) {
           console.log(error.message)
@@ -41,46 +41,46 @@ export function Admin(): React.JSX.Element {
       })
   }, [])
 
-  const handleSeeDetails = (admin: Admin.Store.AdminListParams) => {
+  const handleSeeDetails = (patient: Patient.Store.PatientListParams) => {
     setSeeDetailsDrawer(true)
-    setSelectedAdmin(admin)
+    setSelectPatient(patient)
   }
 
-  const handleDeleteAmdin = (admin: Admin.Store.AdminListParams) => {
-    setDeleteAmdinDrawer(true)
-    setSelectedAdmin(admin)
+  const handleDeletePatient = (patient: Patient.Store.PatientListParams) => {
+    setDeletePatientDrawer(true)
+    setSelectPatient(patient)
   }
 
-  const handleEditAdmin = (admin: Admin.Store.AdminListParams) => {
-    setEditAdminDrawer(true)
-    setSelectedAdmin(admin)
+  const handleEditPatient = (patient: Patient.Store.PatientListParams) => {
+    setEditPatientDrawer(true)
+    setSelectPatient(patient)
   }
 
   if (loading) {
     return <h1>Loading...</h1>
   }
 
-  if (!admins) {
-    return <h1>Nenhum admin encontrado</h1>
+  if (!patients) {
+    return <h1>Nenhum profissional encontrado</h1>
   }
 
   return (
     <Wrapper>
-      <Header title="Administrativo" />
+      <Header title="Pacientes" />
 
       <section className="action-area">
         <div className="search">
           <SubTitle>Buscar</SubTitle>
           <Input
-            placeholder="Digite o nome do admin"
+            placeholder="Digite o nome do pacientes"
             value={search}
             onChange={(inputProps) => setSearch(inputProps.target.value)}
           />
         </div>
 
         <div className="buttons">
-          <Button type="button" onClick={() => setCreateAdminDrawer(true)}>
-            Criar admin
+          <Button type="button" onClick={() => setCreatePatientDrawer(true)}>
+            Criar paciente
           </Button>
         </div>
       </section>
@@ -91,33 +91,31 @@ export function Admin(): React.JSX.Element {
             <tr>
               <th>Nome</th>
               <th>Email</th>
-              <th>Função</th>
               <th>Telefone</th>
               <th>Ações</th>
             </tr>
           </thead>
 
           <tbody>
-            {admins.map((admin) => (
-              <tr key={admin.id}>
-                <td>{admin.name}</td>
-                <td>{admin.email}</td>
-                <td>{admin.role}</td>
-                <td>{admin.phone}</td>
+            {patients.map((patient) => (
+              <tr key={patient.id}>
+                <td>{patient.name}</td>
+                <td>{patient.email}</td>
+                <td>{patient.phone}</td>
                 <td className="action-buttons">
                   <IconButton
                     image={editIMG}
-                    onClick={() => handleEditAdmin(admin)}
+                    onClick={() => handleEditPatient(patient)}
                   />
                   <IconButton
                     image={deleteIMG}
                     backgroundcolor={color.red500}
-                    onClick={() => handleDeleteAmdin(admin)}
+                    onClick={() => handleDeletePatient(patient)}
                   />
                   <IconButton
                     image={viewIMG}
                     backgroundcolor={color.gray300}
-                    onClick={() => handleSeeDetails(admin)}
+                    onClick={() => handleSeeDetails(patient)}
                   />
                 </td>
               </tr>
@@ -126,29 +124,29 @@ export function Admin(): React.JSX.Element {
         </table>
       </section>
 
-      <DrawerCreateAdmin
-        onClose={() => setCreateAdminDrawer(false)}
-        isOpen={createAdminDrawer}
+      <DrawerCreatePatient
+        onClose={() => setCreatePatientDrawer(false)}
+        isOpen={createPatientDrawer}
       />
-      {selectedAdmin && (
+      {selectPatient && (
         <DrawerSeeDetails
-          selectedAdmin={selectedAdmin}
+          selectedPatient={selectPatient}
           onClose={() => setSeeDetailsDrawer(false)}
           isOpen={seeDetailsDrawer}
         />
       )}
-      {selectedAdmin && (
-        <DrawerDeleteAmdin
-          selectedAdmin={selectedAdmin}
-          onClose={() => setDeleteAmdinDrawer(false)}
-          isOpen={deleteAmdinDrawer}
+      {selectPatient && (
+        <DrawerDeletePatient
+          selectedPatient={selectPatient}
+          onClose={() => setDeletePatientDrawer(false)}
+          isOpen={deletePatientDrawer}
         />
       )}
-      {selectedAdmin && (
-        <DrawerEditAdmin
-          selectedAdmin={selectedAdmin}
-          onClose={() => setEditAdminDrawer(false)}
-          isOpen={editAdminDrawer}
+      {selectPatient && (
+        <DrawerEditPatient
+          selectedPatient={selectPatient}
+          onClose={() => setEditPatientDrawer(false)}
+          isOpen={editPatientDrawer}
         />
       )}
     </Wrapper>

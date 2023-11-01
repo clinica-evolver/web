@@ -1,6 +1,6 @@
 import { StateCreator } from 'zustand'
 
-import { api } from '../../../global/services/api'
+import { api } from '@services/api'
 
 const initialSlice: Login.Store.State = {
   auth: undefined,

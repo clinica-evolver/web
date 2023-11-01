@@ -5,34 +5,36 @@ import { Drawer } from '@molecules/drawer'
 import { Input } from '@molecules/input'
 import { Button } from '@atoms/button'
 import { phoneFormat } from '@helpers/phone-format'
-import { useAdminStore } from '../../store'
+import { useEmployeeStore } from '../../store'
 import { Form } from './styles'
 
-interface DrawerEditAdminProps {
+interface DrawerEditEmployeeProps {
   onClose: () => void
   isOpen: boolean
-  selectedAdmin: Admin.Store.AdminListParams
+  selectedEmployee: Employee.Store.EmployeeListParams
 }
 
-export function DrawerEditAdmin({
+export function DrawerEditEmployee({
   onClose,
   isOpen,
-  selectedAdmin,
-}: DrawerEditAdminProps): React.JSX.Element {
-  const { editAdmin } = useAdminStore()
+  selectedEmployee,
+}: DrawerEditEmployeeProps): React.JSX.Element {
+  const { editEmployee } = useEmployeeStore()
 
-  const [email, setEmail] = useState(selectedAdmin.email)
-  const [phone, setPhone] = useState(selectedAdmin.phone)
-  const [role, setRole] = useState(selectedAdmin.role)
+  const [email, setEmail] = useState(selectedEmployee.email)
+  const [phone, setPhone] = useState(selectedEmployee.phone)
+  const [role, setRole] = useState(selectedEmployee.role)
   const [descriptionRole, setDescriptionRole] = useState(
-    selectedAdmin.descriptionRole,
+    selectedEmployee.descriptionRole,
   )
-  const [address, setAddress] = useState(selectedAdmin.address)
+  const [address, setAddress] = useState(selectedEmployee.address)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleEditAdmin = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleEditEmployee = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
     setIsLoading(true)
     event.preventDefault()
 
@@ -40,23 +42,23 @@ export function DrawerEditAdmin({
       return toast.error('As senhas precisam ser iguais')
     }
 
-    const admin = {
-      id: selectedAdmin.id,
+    const data = {
+      id: selectedEmployee.id,
       email,
       phone,
-      access: 1,
+      access: 3,
       role,
       descriptionRole,
       address,
     }
 
     if (password.length) {
-      Object.assign(admin, { password })
+      Object.assign(data, { password })
     }
 
     try {
-      await editAdmin(admin)
-      toast.success('Admin editado com sucesso')
+      await editEmployee(data)
+      toast.success('Profissional editado com sucesso')
       onClose()
     } catch (error) {
       if (error instanceof Error) {
@@ -68,8 +70,8 @@ export function DrawerEditAdmin({
   }
 
   return (
-    <Drawer title="Editar um Admin" onClose={onClose} isOpen={isOpen}>
-      <Form onSubmit={handleEditAdmin}>
+    <Drawer title="Editar um Profissional" onClose={onClose} isOpen={isOpen}>
+      <Form onSubmit={handleEditEmployee}>
         <div className="scroll">
           <Input
             type="email"

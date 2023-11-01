@@ -3,30 +3,30 @@ import { toast } from 'react-toastify'
 
 import { Drawer } from '@molecules/drawer'
 import { Button } from '@atoms/button'
-import { useAdminStore } from '../../store'
+import { useEmployeeStore } from '../../store'
 import { ContainerText } from './styles'
 
-interface DrawerDeleteAmdinProps {
+interface DrawerDeleteEmployeeProps {
   onClose: () => void
   isOpen: boolean
-  selectedAdmin: Admin.Store.AdminListParams
+  selectedEmployee: Employee.Store.EmployeeListParams
 }
 
-export function DrawerDeleteAmdin({
+export function DrawerDeleteEmployee({
   onClose,
   isOpen,
-  selectedAdmin,
-}: DrawerDeleteAmdinProps): React.JSX.Element {
-  const { deleteAdmin } = useAdminStore()
+  selectedEmployee,
+}: DrawerDeleteEmployeeProps): React.JSX.Element {
+  const { deleteEmployee } = useEmployeeStore()
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleDeleteAmdin = async () => {
+  const handleDeleteEmployee = async () => {
     setIsLoading(true)
 
     try {
-      await deleteAdmin(selectedAdmin.id)
-      toast.success('Admin exluido com sucesso')
+      await deleteEmployee(selectedEmployee.id)
+      toast.success('Profissional exluido com sucesso')
       onClose()
     } catch (error) {
       if (error instanceof Error) {
@@ -38,9 +38,12 @@ export function DrawerDeleteAmdin({
   }
 
   return (
-    <Drawer title="Deletar admin" onClose={onClose} isOpen={isOpen}>
+    <Drawer title="Deletar profissional" onClose={onClose} isOpen={isOpen}>
       <ContainerText>
-        <p>Tem certeza que deseja excluir esse admin ({selectedAdmin.name})?</p>
+        <p>
+          Tem certeza que deseja excluir esse profissional (
+          {selectedEmployee.name})?
+        </p>
 
         <p>
           Essa ação é irreversível e você precisará criar o usuário de novo se
@@ -48,7 +51,7 @@ export function DrawerDeleteAmdin({
         </p>
       </ContainerText>
 
-      <Button type="button" onClick={handleDeleteAmdin} loading={isLoading}>
+      <Button type="button" onClick={handleDeleteEmployee} loading={isLoading}>
         Sim, Excluir!
       </Button>
     </Drawer>

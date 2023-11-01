@@ -5,34 +5,30 @@ import { Drawer } from '@molecules/drawer'
 import { Input } from '@molecules/input'
 import { Button } from '@atoms/button'
 import { phoneFormat } from '@helpers/phone-format'
-import { useAdminStore } from '../../store'
+import { usePatientStore } from '../../store'
 import { Form } from './styles'
 
-interface DrawerEditAdminProps {
+interface DrawerEditPatientProps {
   onClose: () => void
   isOpen: boolean
-  selectedAdmin: Admin.Store.AdminListParams
+  selectedPatient: Patient.Store.PatientListParams
 }
 
-export function DrawerEditAdmin({
+export function DrawerEditPatient({
   onClose,
   isOpen,
-  selectedAdmin,
-}: DrawerEditAdminProps): React.JSX.Element {
-  const { editAdmin } = useAdminStore()
+  selectedPatient,
+}: DrawerEditPatientProps): React.JSX.Element {
+  const { editPatient } = usePatientStore()
 
-  const [email, setEmail] = useState(selectedAdmin.email)
-  const [phone, setPhone] = useState(selectedAdmin.phone)
-  const [role, setRole] = useState(selectedAdmin.role)
-  const [descriptionRole, setDescriptionRole] = useState(
-    selectedAdmin.descriptionRole,
-  )
-  const [address, setAddress] = useState(selectedAdmin.address)
+  const [email, setEmail] = useState(selectedPatient.email)
+  const [phone, setPhone] = useState(selectedPatient.phone)
+  const [address, setAddress] = useState(selectedPatient.address)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleEditAdmin = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleEditPatient = async (event: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true)
     event.preventDefault()
 
@@ -40,23 +36,21 @@ export function DrawerEditAdmin({
       return toast.error('As senhas precisam ser iguais')
     }
 
-    const admin = {
-      id: selectedAdmin.id,
+    const data = {
+      id: selectedPatient.id,
       email,
       phone,
-      access: 1,
-      role,
-      descriptionRole,
+      access: 3,
       address,
     }
 
     if (password.length) {
-      Object.assign(admin, { password })
+      Object.assign(data, { password })
     }
 
     try {
-      await editAdmin(admin)
-      toast.success('Admin editado com sucesso')
+      await editPatient(data)
+      toast.success('Paciente editado com sucesso')
       onClose()
     } catch (error) {
       if (error instanceof Error) {
@@ -68,8 +62,8 @@ export function DrawerEditAdmin({
   }
 
   return (
-    <Drawer title="Editar um Admin" onClose={onClose} isOpen={isOpen}>
-      <Form onSubmit={handleEditAdmin}>
+    <Drawer title="Editar um paciente" onClose={onClose} isOpen={isOpen}>
+      <Form onSubmit={handleEditPatient}>
         <div className="scroll">
           <Input
             type="email"
@@ -85,20 +79,6 @@ export function DrawerEditAdmin({
             value={phone}
             onChange={(inputProps) =>
               setPhone(phoneFormat(inputProps.target.value))
-            }
-          />
-          <Input
-            marginbottom={1}
-            label="Função"
-            value={role}
-            onChange={(inputProps) => setRole(inputProps.target.value)}
-          />
-          <Input
-            marginbottom={1}
-            label="Descrição da função"
-            value={descriptionRole}
-            onChange={(inputProps) =>
-              setDescriptionRole(inputProps.target.value)
             }
           />
           <Input
@@ -125,7 +105,6 @@ export function DrawerEditAdmin({
               }
             />
           </div>
-
           <Button type="submit" loading={isLoading}>
             Salvar
           </Button>

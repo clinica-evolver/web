@@ -2,37 +2,41 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { Drawer } from '@molecules/drawer'
+import { Select } from '@molecules/select'
 import { Input } from '@molecules/input'
 import { Button } from '@atoms/button'
+import { formatDateToISO, maskDate } from '@helpers/date-format'
 import { phoneFormat } from '@helpers/phone-format'
-import { useAdminStore } from '../../store'
+import { useEmployeeStore } from '../../store'
 import { Form } from './styles'
 
-interface DrawerEditAdminProps {
+interface DrawerCreateEmployeeProps {
   onClose: () => void
   isOpen: boolean
-  selectedAdmin: Admin.Store.AdminListParams
 }
 
-export function DrawerEditAdmin({
+export function DrawerCreateEmployee({
   onClose,
   isOpen,
-  selectedAdmin,
-}: DrawerEditAdminProps): React.JSX.Element {
-  const { editAdmin } = useAdminStore()
+}: DrawerCreateEmployeeProps): React.JSX.Element {
+  const { createEmployee } = useEmployeeStore()
 
-  const [email, setEmail] = useState(selectedAdmin.email)
-  const [phone, setPhone] = useState(selectedAdmin.phone)
-  const [role, setRole] = useState(selectedAdmin.role)
-  const [descriptionRole, setDescriptionRole] = useState(
-    selectedAdmin.descriptionRole,
-  )
-  const [address, setAddress] = useState(selectedAdmin.address)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [dateOfBirth, setDateOfBirth] = useState('')
+  const [phone, setPhone] = useState('')
+  const [role, setRole] = useState('')
+  const [descriptionRole, setDescriptionRole] = useState('')
+  const [registerCode, setRegisterCode] = useState('')
+  const [address, setAddress] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [gender, setGender] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleEditAdmin = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateEmployee = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
     setIsLoading(true)
     event.preventDefault()
 
@@ -40,24 +44,22 @@ export function DrawerEditAdmin({
       return toast.error('As senhas precisam ser iguais')
     }
 
-    const admin = {
-      id: selectedAdmin.id,
-      email,
-      phone,
-      access: 1,
-      role,
-      descriptionRole,
-      address,
-    }
-
-    if (password.length) {
-      Object.assign(admin, { password })
-    }
-
     try {
-      await editAdmin(admin)
-      toast.success('Admin editado com sucesso')
+      await createEmployee({
+        name,
+        email,
+        dateBirth: formatDateToISO(dateOfBirth),
+        phone,
+        access: 1,
+        gender,
+        role,
+        descriptionRole,
+        registerCode,
+        address,
+        password,
+      })
       onClose()
+      toast.success('Profissional criado com sucesso')
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)
@@ -68,15 +70,30 @@ export function DrawerEditAdmin({
   }
 
   return (
-    <Drawer title="Editar um Admin" onClose={onClose} isOpen={isOpen}>
-      <Form onSubmit={handleEditAdmin}>
+    <Drawer title="Criar um Profissional" onClose={onClose} isOpen={isOpen}>
+      <Form onSubmit={handleCreateEmployee}>
         <div className="scroll">
+          <Input
+            marginbottom={1}
+            label="Nome"
+            value={name}
+            onChange={(inputProps) => setName(inputProps.target.value)}
+          />
           <Input
             type="email"
             marginbottom={1}
             label="E-mail"
             value={email}
             onChange={(inputProps) => setEmail(inputProps.target.value)}
+          />
+          <Input
+            maxLength={10}
+            marginbottom={1}
+            label="Data de nascimento"
+            value={dateOfBirth}
+            onChange={(inputProps) =>
+              setDateOfBirth(maskDate(inputProps.target.value))
+            }
           />
           <Input
             maxLength={15}
@@ -86,6 +103,15 @@ export function DrawerEditAdmin({
             onChange={(inputProps) =>
               setPhone(phoneFormat(inputProps.target.value))
             }
+          />
+          <Select
+            marginbottom={1}
+            label="Sexo"
+            options={[
+              { value: 'male', label: 'Masculino' },
+              { value: 'female', label: 'Feminino' },
+            ]}
+            onChange={setGender}
           />
           <Input
             marginbottom={1}
@@ -100,6 +126,12 @@ export function DrawerEditAdmin({
             onChange={(inputProps) =>
               setDescriptionRole(inputProps.target.value)
             }
+          />
+          <Input
+            marginbottom={1}
+            label="Código de registro"
+            value={registerCode}
+            onChange={(inputProps) => setRegisterCode(inputProps.target.value)}
           />
           <Input
             marginbottom={1}
@@ -127,7 +159,7 @@ export function DrawerEditAdmin({
           </div>
 
           <Button type="submit" loading={isLoading}>
-            Salvar
+            Criar
           </Button>
         </div>
       </Form>

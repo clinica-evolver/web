@@ -9,44 +9,44 @@ import { DetailsSection } from './styles'
 interface DrawerSeeDetailsProps {
   onClose: () => void
   isOpen: boolean
-  selectedAdmin: Admin.Store.AdminListParams
+  selectedEmployee: Employee.Store.EmployeeListParams
 }
 
 export function DrawerSeeDetails({
   onClose,
   isOpen,
-  selectedAdmin,
+  selectedEmployee,
 }: DrawerSeeDetailsProps): React.JSX.Element {
-  const gender = genderFormat(selectedAdmin.gender) || 'Não informado'
+  const gender = genderFormat(selectedEmployee.gender) || 'Não informado'
 
   return (
     <Drawer title="Ver detalhes do admin" onClose={onClose} isOpen={isOpen}>
       <DetailsSection>
-        <InfoAndValue title="Nome" value={selectedAdmin.name} />
+        <InfoAndValue title="Nome" value={selectedEmployee.name} />
         <InfoAndValue
           title="Data de nascimento"
-          value={formatIsoToDate(selectedAdmin.dateBirth)}
+          value={formatIsoToDate(selectedEmployee.dateBirth)}
         />
-        <InfoAndValue title="Endereço" value={selectedAdmin.address} />
-        <InfoAndValue title="E-mail" value={selectedAdmin.email} />
-        <InfoAndValue title="Telefone" value={selectedAdmin.phone} />
+        <InfoAndValue title="Endereço" value={selectedEmployee.address} />
+        <InfoAndValue title="E-mail" value={selectedEmployee.email} />
+        <InfoAndValue title="Telefone" value={selectedEmployee.phone} />
         <InfoAndValue title="Sexo" value={gender} />
-        <InfoAndValue title="Função" value={selectedAdmin.role} />
+        <InfoAndValue title="Função" value={selectedEmployee.role} />
         <InfoAndValue
           title="Descrição da função"
-          value={selectedAdmin.descriptionRole}
+          value={selectedEmployee.descriptionRole}
         />
         <InfoAndValue
           title="Código de registro"
-          value={selectedAdmin.registerCode}
+          value={selectedEmployee.registerCode}
         />
         <InfoAndValue
           title="Data de criação"
-          value={formatIsoToDate(selectedAdmin.createdAt)}
+          value={formatIsoToDate(selectedEmployee.createdAt)}
         />
         <InfoAndValue
           title="Ultima atualização"
-          value={formatIsoToDate(selectedAdmin.updatedAt)}
+          value={formatIsoToDate(selectedEmployee.updatedAt)}
         />
       </DetailsSection>
     </Drawer>
