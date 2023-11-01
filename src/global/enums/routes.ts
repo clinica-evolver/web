@@ -3,4 +3,5 @@ export enum RoutesPath {
   PRIVATE = '/private',
   ADMIN = '/private/admin',
   EMPLOYEE = '/private/employee',
+  PATIENT = '/private/patient',
 }

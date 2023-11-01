@@ -14,13 +14,19 @@ const navigationOptions = [
     label: 'Profissionais',
     path: RoutesPath.EMPLOYEE,
   },
+  {
+    label: 'Pacientes',
+    path: RoutesPath.PATIENT,
+  },
 ]
 
 export function NavAndHeaderTemplate(): React.JSX.Element {
   return (
     <NavAndHeaderContainer>
       <nav>
-        <Logo />
+        <div className="container-logo">
+          <Logo />
+        </div>
 
         <ul>
           {navigationOptions.map((option) => (

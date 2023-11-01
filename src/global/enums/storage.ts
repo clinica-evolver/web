@@ -3,4 +3,5 @@ export enum Storage {
   LOGIN_KEY = 'LOGIN_KEY',
   ADMIN_KEY = 'ADMIN_KEY',
   EMPLOYEE_KEY = 'EMPLOYEE_KEY',
+  PATIENT_KEY = 'PATIENT_KEY',
 }
