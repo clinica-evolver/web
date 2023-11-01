@@ -9,28 +9,28 @@ import { Header } from '@molecules/header'
 import viewIMG from '@assets/icons/see.png'
 import editIMG from '@assets/icons/pencil.png'
 import deleteIMG from '@assets/icons/trash.png'
-import { useAdminStore } from '../store'
-import { DrawerCreateAdmin } from '../components/drawer-create-admin'
+import { useEmployeeStore } from '../store'
+import { DrawerCreateEmployee } from '../components/drawer-create-employee'
 import { DrawerSeeDetails } from '../components/drawer-see-details'
-import { DrawerDeleteAmdin } from '../components/drawer-delete-admin'
-import { DrawerEditAdmin } from '../components/drawer-edit-admin'
+import { DrawerDeleteEmployee } from '../components/drawer-delete-employee'
+import { DrawerEditEmployee } from '../components/drawer-edit-employee'
 import { Wrapper } from './styles'
 
-export function Admin(): React.JSX.Element {
-  const { getAdmins, admins } = useAdminStore()
+export function Employee(): React.JSX.Element {
+  const { getEmployees, employees } = useEmployeeStore()
   const { color } = useTheme()
 
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const [createAdminDrawer, setCreateAdminDrawer] = useState(false)
+  const [createEmployeeDrawer, setCreateEmployeeDrawer] = useState(false)
   const [seeDetailsDrawer, setSeeDetailsDrawer] = useState(false)
-  const [deleteAmdinDrawer, setDeleteAmdinDrawer] = useState(false)
-  const [editAdminDrawer, setEditAdminDrawer] = useState(false)
-  const [selectedAdmin, setSelectedAdmin] =
-    useState<Admin.Store.AdminListParams>()
+  const [deleteEmployeeDrawer, setDeleteEmployeeDrawer] = useState(false)
+  const [editEmployeeDrawer, setEditEmployeeDrawer] = useState(false)
+  const [selectEmployee, setSelectEmployee] =
+    useState<Employee.Store.EmployeeListParams>()
 
   useEffect(() => {
-    getAdmins()
+    getEmployees()
       .catch((error) => {
         if (error instanceof Error) {
           console.log(error.message)
@@ -41,46 +41,48 @@ export function Admin(): React.JSX.Element {
       })
   }, [])
 
-  const handleSeeDetails = (admin: Admin.Store.AdminListParams) => {
+  const handleSeeDetails = (employee: Employee.Store.EmployeeListParams) => {
     setSeeDetailsDrawer(true)
-    setSelectedAdmin(admin)
+    setSelectEmployee(employee)
   }
 
-  const handleDeleteAmdin = (admin: Admin.Store.AdminListParams) => {
-    setDeleteAmdinDrawer(true)
-    setSelectedAdmin(admin)
+  const handleDeleteEmployee = (
+    employee: Employee.Store.EmployeeListParams,
+  ) => {
+    setDeleteEmployeeDrawer(true)
+    setSelectEmployee(employee)
   }
 
-  const handleEditAdmin = (admin: Admin.Store.AdminListParams) => {
-    setEditAdminDrawer(true)
-    setSelectedAdmin(admin)
+  const handleEditEmployee = (employee: Employee.Store.EmployeeListParams) => {
+    setEditEmployeeDrawer(true)
+    setSelectEmployee(employee)
   }
 
   if (loading) {
     return <h1>Loading...</h1>
   }
 
-  if (!admins) {
-    return <h1>Nenhum admin encontrado</h1>
+  if (!employees) {
+    return <h1>Nenhum profissional encontrado</h1>
   }
 
   return (
     <Wrapper>
-      <Header title="Administrativo" />
+      <Header title="Profissionais" />
 
       <section className="action-area">
         <div className="search">
           <SubTitle>Buscar</SubTitle>
           <Input
-            placeholder="Digite o nome do admin"
+            placeholder="Digite o nome do profissionais"
             value={search}
             onChange={(inputProps) => setSearch(inputProps.target.value)}
           />
         </div>
 
         <div className="buttons">
-          <Button type="button" onClick={() => setCreateAdminDrawer(true)}>
-            Criar admin
+          <Button type="button" onClick={() => setCreateEmployeeDrawer(true)}>
+            Criar profissional
           </Button>
         </div>
       </section>
@@ -98,26 +100,26 @@ export function Admin(): React.JSX.Element {
           </thead>
 
           <tbody>
-            {admins.map((admin) => (
-              <tr key={admin.id}>
-                <td>{admin.name}</td>
-                <td>{admin.email}</td>
-                <td>{admin.role}</td>
-                <td>{admin.phone}</td>
+            {employees.map((employee) => (
+              <tr key={employee.id}>
+                <td>{employee.name}</td>
+                <td>{employee.email}</td>
+                <td>{employee.role}</td>
+                <td>{employee.phone}</td>
                 <td className="action-buttons">
                   <IconButton
                     image={editIMG}
-                    onClick={() => handleEditAdmin(admin)}
+                    onClick={() => handleEditEmployee(employee)}
                   />
                   <IconButton
                     image={deleteIMG}
                     backgroundcolor={color.red500}
-                    onClick={() => handleDeleteAmdin(admin)}
+                    onClick={() => handleDeleteEmployee(employee)}
                   />
                   <IconButton
                     image={viewIMG}
                     backgroundcolor={color.gray300}
-                    onClick={() => handleSeeDetails(admin)}
+                    onClick={() => handleSeeDetails(employee)}
                   />
                 </td>
               </tr>
@@ -126,29 +128,29 @@ export function Admin(): React.JSX.Element {
         </table>
       </section>
 
-      <DrawerCreateAdmin
-        onClose={() => setCreateAdminDrawer(false)}
-        isOpen={createAdminDrawer}
+      <DrawerCreateEmployee
+        onClose={() => setCreateEmployeeDrawer(false)}
+        isOpen={createEmployeeDrawer}
       />
-      {selectedAdmin && (
+      {selectEmployee && (
         <DrawerSeeDetails
-          selectedAdmin={selectedAdmin}
+          selectedEmployee={selectEmployee}
           onClose={() => setSeeDetailsDrawer(false)}
           isOpen={seeDetailsDrawer}
         />
       )}
-      {selectedAdmin && (
-        <DrawerDeleteAmdin
-          selectedAdmin={selectedAdmin}
-          onClose={() => setDeleteAmdinDrawer(false)}
-          isOpen={deleteAmdinDrawer}
+      {selectEmployee && (
+        <DrawerDeleteEmployee
+          selectedEmployee={selectEmployee}
+          onClose={() => setDeleteEmployeeDrawer(false)}
+          isOpen={deleteEmployeeDrawer}
         />
       )}
-      {selectedAdmin && (
-        <DrawerEditAdmin
-          selectedAdmin={selectedAdmin}
-          onClose={() => setEditAdminDrawer(false)}
-          isOpen={editAdminDrawer}
+      {selectEmployee && (
+        <DrawerEditEmployee
+          selectedEmployee={selectEmployee}
+          onClose={() => setEditEmployeeDrawer(false)}
+          isOpen={editEmployeeDrawer}
         />
       )}
     </Wrapper>

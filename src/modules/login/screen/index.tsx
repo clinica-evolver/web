@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { Logo } from '@atoms/logo'
 import { Input } from '@molecules/input'
 import { Button } from '@atoms/button'
+import { RoutesPath } from '@enums/routes'
 import { useLoginStore } from '../store'
 import { Wrapper } from './styles'
 
@@ -22,7 +23,7 @@ export function Login(): React.JSX.Element {
 
     try {
       await login({ email, password })
-      navigate('/admin')
+      navigate(RoutesPath.ADMIN)
     } catch (error) {
       if (error instanceof Error) {
         toast.error(`${error.message}`)
