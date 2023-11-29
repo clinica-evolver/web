@@ -10,7 +10,7 @@ export const useLoginStore = create<Login.Store.Props>()(
       ...createLoginSlice(...storePros),
     }),
     {
-      name: `${Storage.APP_KEY}:${Storage.LOGIN_KEY}`,
+      name: `${Storage.APP_KEY}:${Storage.AUTH_KEY}`,
       storage: createJSONStorage(() => sessionStorage),
     },
   ),

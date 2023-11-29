@@ -9,6 +9,7 @@ import { Header } from '@molecules/header'
 import viewIMG from '@assets/icons/see.png'
 import editIMG from '@assets/icons/pencil.png'
 import deleteIMG from '@assets/icons/trash.png'
+import { DataNotFoundTemplate } from '@templates/data-not-found'
 import { usePatientStore } from '../store'
 import { DrawerCreatePatient } from '../components/drawer-create-patient'
 import { DrawerSeeDetails } from '../components/drawer-see-details'
@@ -60,10 +61,6 @@ export function Patient(): React.JSX.Element {
     return <h1>Loading...</h1>
   }
 
-  if (!patients) {
-    return <h1>Nenhum profissional encontrado</h1>
-  }
-
   return (
     <Wrapper>
       <Header title="Pacientes" />
@@ -85,44 +82,51 @@ export function Patient(): React.JSX.Element {
         </div>
       </section>
 
-      <section className="table-area">
-        <table>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Email</th>
-              <th>Telefone</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {patients.map((patient) => (
-              <tr key={patient.id}>
-                <td>{patient.name}</td>
-                <td>{patient.email}</td>
-                <td>{patient.phone}</td>
-                <td className="action-buttons">
-                  <IconButton
-                    image={editIMG}
-                    onClick={() => handleEditPatient(patient)}
-                  />
-                  <IconButton
-                    image={deleteIMG}
-                    backgroundcolor={color.red500}
-                    onClick={() => handleDeletePatient(patient)}
-                  />
-                  <IconButton
-                    image={viewIMG}
-                    backgroundcolor={color.gray300}
-                    onClick={() => handleSeeDetails(patient)}
-                  />
-                </td>
+      {!patients ? (
+        <DataNotFoundTemplate
+          title="Nenhum paciente encontrado"
+          message="Tente criar um novo paciente"
+        />
+      ) : (
+        <section className="table-area">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Ações</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+            </thead>
+
+            <tbody>
+              {patients.map((patient) => (
+                <tr key={patient.id}>
+                  <td>{patient.name}</td>
+                  <td>{patient.email}</td>
+                  <td>{patient.phone}</td>
+                  <td className="action-buttons">
+                    <IconButton
+                      image={editIMG}
+                      onClick={() => handleEditPatient(patient)}
+                    />
+                    <IconButton
+                      image={deleteIMG}
+                      backgroundcolor={color.red500}
+                      onClick={() => handleDeletePatient(patient)}
+                    />
+                    <IconButton
+                      image={viewIMG}
+                      backgroundcolor={color.gray300}
+                      onClick={() => handleSeeDetails(patient)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      )}
 
       <DrawerCreatePatient
         onClose={() => setCreatePatientDrawer(false)}

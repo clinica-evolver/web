@@ -50,7 +50,7 @@ export function DrawerCreateEmployee({
         email,
         dateBirth: formatDateToISO(dateOfBirth),
         phone,
-        access: 1,
+        access: 2,
         gender,
         role,
         descriptionRole,

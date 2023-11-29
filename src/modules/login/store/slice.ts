@@ -1,9 +1,11 @@
 import { StateCreator } from 'zustand'
+import { jwtDecode } from 'jwt-decode'
 
 import { api } from '@services/api'
 
 const initialSlice: Login.Store.State = {
   auth: undefined,
+  user: undefined,
 }
 
 export const createLoginSlice: StateCreator<
@@ -17,10 +19,19 @@ export const createLoginSlice: StateCreator<
     try {
       const { data } = await api.post('/login', params)
 
-      set({ auth: data.token })
+      const decodedToken = jwtDecode<Login.Store.DecodedToken>(data.token)
+
+      set({
+        auth: {
+          token: data.token,
+        },
+        user: { ...decodedToken },
+      })
     } catch (error) {
       throw new Error('Erro ao fazer login')
     }
   },
-  logout: async () => {},
+  logout: () => {
+    set(initialSlice)
+  },
 })

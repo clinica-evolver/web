@@ -17,6 +17,7 @@ export const NavAndHeaderContainer = styled.section`
 
     ul {
       margin-top: 2rem;
+      height: 70%;
 
       li {
         padding: 1rem 2rem;
@@ -29,6 +30,33 @@ export const NavAndHeaderContainer = styled.section`
 
       li:hover {
         background-color: ${({ theme }) => theme.color.green600};
+      }
+    }
+
+    .container-user {
+      margin-top: auto;
+      padding: 1rem 2rem;
+
+      .initials {
+        background-color: ${({ theme }) => theme.color.oranje500};
+        padding: 0.5rem;
+        border-radius: 50%;
+        color: ${({ theme }) => theme.color.white};
+      }
+
+      .name {
+        margin-left: 0.5rem;
+        color: ${({ theme }) => theme.color.white};
+      }
+
+      .signout-button {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 0.2rem;
+        background-color: ${({ theme }) => theme.color.red500};
+        color: ${({ theme }) => theme.color.white};
+        border: none;
+        cursor: pointer;
       }
     }
   }

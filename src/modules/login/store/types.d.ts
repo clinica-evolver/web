@@ -1,5 +1,13 @@
 declare namespace Login {
   namespace Store {
+    interface DecodedToken {
+      id: string
+      email: string
+      name: string
+      access: number
+      iat: number
+      exp: number
+    }
     interface Auth {
       token: string
     }
@@ -11,11 +19,12 @@ declare namespace Login {
 
     interface Action {
       login: (params: LoginParams) => Promise<void>
-      logout: () => Promise<void>
+      logout: () => void
     }
 
     interface State {
       auth?: Auth
+      user?: DecodedToken
     }
 
     type Props = State & Action

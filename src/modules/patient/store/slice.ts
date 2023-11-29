@@ -19,28 +19,28 @@ export const createPatientSlice: StateCreator<
 
       set({ patients: data })
     } catch (error) {
-      throw new Error('Erro ao buscar profissionais')
+      throw new Error('Erro ao buscar pacientes')
     }
   },
   createPatient: async (params: Patient.Store.PatientCreateParams) => {
     try {
       await api.post('/patient', params)
     } catch (error) {
-      throw new Error('Erro ao criar profissional')
+      throw new Error('Erro ao criar paciente')
     }
   },
   editPatient: async (params: Patient.Store.PatientEditParams) => {
     try {
       await api.put('/patient', params)
     } catch (error) {
-      throw new Error('Erro ao editar profissional')
+      throw new Error('Erro ao editar paciente')
     }
   },
   deletePatient: async (id) => {
     try {
       await api.delete(`/patient/${id}`)
     } catch (error) {
-      throw new Error('Erro ao deletar profissional')
+      throw new Error('Erro ao deletar paciente')
     }
   },
 })

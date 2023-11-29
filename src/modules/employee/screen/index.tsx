@@ -15,6 +15,7 @@ import { DrawerSeeDetails } from '../components/drawer-see-details'
 import { DrawerDeleteEmployee } from '../components/drawer-delete-employee'
 import { DrawerEditEmployee } from '../components/drawer-edit-employee'
 import { Wrapper } from './styles'
+import { DataNotFoundTemplate } from '@templates/data-not-found'
 
 export function Employee(): React.JSX.Element {
   const { getEmployees, employees } = useEmployeeStore()
@@ -62,10 +63,6 @@ export function Employee(): React.JSX.Element {
     return <h1>Loading...</h1>
   }
 
-  if (!employees) {
-    return <h1>Nenhum profissional encontrado</h1>
-  }
-
   return (
     <Wrapper>
       <Header title="Profissionais" />
@@ -87,46 +84,53 @@ export function Employee(): React.JSX.Element {
         </div>
       </section>
 
-      <section className="table-area">
-        <table>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Email</th>
-              <th>Função</th>
-              <th>Telefone</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {employees.map((employee) => (
-              <tr key={employee.id}>
-                <td>{employee.name}</td>
-                <td>{employee.email}</td>
-                <td>{employee.role}</td>
-                <td>{employee.phone}</td>
-                <td className="action-buttons">
-                  <IconButton
-                    image={editIMG}
-                    onClick={() => handleEditEmployee(employee)}
-                  />
-                  <IconButton
-                    image={deleteIMG}
-                    backgroundcolor={color.red500}
-                    onClick={() => handleDeleteEmployee(employee)}
-                  />
-                  <IconButton
-                    image={viewIMG}
-                    backgroundcolor={color.gray300}
-                    onClick={() => handleSeeDetails(employee)}
-                  />
-                </td>
+      {!employees?.length ? (
+        <DataNotFoundTemplate
+          title="Nenhum profissional encontrado"
+          message="Tente criar um novo profissional"
+        />
+      ) : (
+        <section className="table-area">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Função</th>
+                <th>Telefone</th>
+                <th>Ações</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+            </thead>
+
+            <tbody>
+              {employees.map((employee) => (
+                <tr key={employee.id}>
+                  <td>{employee.name}</td>
+                  <td>{employee.email}</td>
+                  <td>{employee.role}</td>
+                  <td>{employee.phone}</td>
+                  <td className="action-buttons">
+                    <IconButton
+                      image={editIMG}
+                      onClick={() => handleEditEmployee(employee)}
+                    />
+                    <IconButton
+                      image={deleteIMG}
+                      backgroundcolor={color.red500}
+                      onClick={() => handleDeleteEmployee(employee)}
+                    />
+                    <IconButton
+                      image={viewIMG}
+                      backgroundcolor={color.gray300}
+                      onClick={() => handleSeeDetails(employee)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      )}
 
       <DrawerCreateEmployee
         onClose={() => setCreateEmployeeDrawer(false)}
